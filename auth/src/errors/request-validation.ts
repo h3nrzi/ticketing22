@@ -11,10 +11,10 @@ export class RequestValidationError extends Error {
     Object.setPrototypeOf(this, RequestValidationError.prototype);
   }
 
-  serializeErrors(): { felid: string; message: string }[] {
+  serializeErrors() {
     return this.errors.map((error) => {
       return {
-        felid: error.param,
+        field: error.param,
         message: error.msg,
       };
     });
