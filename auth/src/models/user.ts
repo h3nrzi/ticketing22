@@ -25,4 +25,4 @@ function buildUser(attrs: UserAttrs) {
   return new User(attrs);
 }
 
-export default User;
+export { User, buildUser };
