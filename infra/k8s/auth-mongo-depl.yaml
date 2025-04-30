@@ -14,7 +14,14 @@ spec:
     spec:
       containers:
         - name: auth-mongo
-          image: sha256:03935b5a3e36c13762d990847d2cce38884941b5a1c406a56ef2f0e44bab9273
+          image: mongo
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
 ---
 apiVersion: v1
 kind: Service
