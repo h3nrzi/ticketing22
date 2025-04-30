@@ -8,6 +8,8 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     });
   }
 
+  console.log(err.message);
+
   return res.status(400).send({
     errors: [{ message: "Something went wrong!" }],
   });

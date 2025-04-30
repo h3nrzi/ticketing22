@@ -34,12 +34,12 @@ const userSchema = new Schema({
   },
 });
 
-// Build User model
-const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
-
 // Create a new User instance
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
+
+// Build User model
+const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
 
 export default User;
