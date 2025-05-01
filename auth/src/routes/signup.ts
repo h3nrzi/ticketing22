@@ -18,20 +18,14 @@ router.post(
   async (req: Request, res: Response) => {
     // handle validation of email and password
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-    }
+    if (!errors.isEmpty()) throw new RequestValidationError(errors.array());
 
     // destructure email and password from request body
     const { email, password } = req.body;
 
     // check if user already exists
     const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      // console.log("Email in use");
-      // return res.status(400).json({});
-      throw new BadRequestError("Email in use");
-    }
+    if (existingUser) throw new BadRequestError("Email in use");
 
     // create a new user
     const user = User.build({ email, password });
