@@ -49,6 +49,10 @@ app.use(errorHandler);
 
 const start = async () => {
   try {
+    // Check if JWT_KEY is defined in environment variables
+    if (!process.env.JWT_KEY) throw new Error("JWT_KEY must be defined!");
+
+    // Connect to MongoDB
     await mongoose.connect("mongodb://auth-mongo-srv:27017/auth", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -59,6 +63,7 @@ const start = async () => {
     console.error(err);
   }
 
+  // Start the server
   app.listen(3000, () => {
     console.log("Listening on port 3000!");
   });
