@@ -1,7 +1,8 @@
-import { json } from "body-parser";
+import bodyParser from "body-parser";
 import express from "express";
 import "express-async-errors";
 import mongoose from "mongoose";
+import cookieSession from "cookie-session";
 
 import { NotFoundError } from "./errors/not-found-error";
 import { errorHandler } from "./middlewares/error-handler";
@@ -10,11 +11,27 @@ import { signinRouter } from "./routes/signin";
 import { signoutRouter } from "./routes/signout";
 import { signupRouter } from "./routes/signup";
 
-// Main Express application setup
 const app = express();
-app.use(json());
 
-// Route handlers
+//----------- Middlewares ------------------//
+
+// To enable trust proxy for secure cookies
+app.set("trust proxy", true);
+
+// To parse JSON requests
+app.use(bodyParser.json());
+
+// To handle cookie sessions
+app.use(
+  cookieSession({
+    signed: false, // Disable signing of cookies
+    secure: true, // Use secure cookies (only send over HTTPS)
+  })
+);
+
+//----------- Route handlers ------------------//
+
+// Handle user authentication routes
 app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
@@ -25,10 +42,11 @@ app.all("*", async () => {
   throw new NotFoundError();
 });
 
-// Middleware to handle errors
+// Handle errors
 app.use(errorHandler);
 
-// Start the application
+//----------- Start the application ------------------//
+
 const start = async () => {
   try {
     await mongoose.connect("mongodb://auth-mongo-srv:27017/auth", {
