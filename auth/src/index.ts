@@ -23,10 +23,10 @@ app.use(bodyParser.json());
 
 // To handle cookie sessions
 app.use(
-  cookieSession({
-    signed: false, // Disable signing of cookies
-    secure: true, // Use secure cookies (only send over HTTPS)
-  })
+	cookieSession({
+		signed: false, // Disable signing of cookies
+		secure: true, // Use secure cookies (only send over HTTPS)
+	}),
 );
 
 //----------- Route handlers ------------------//
@@ -39,7 +39,7 @@ app.use(signupRouter);
 
 // Catch-all route for handling undefined routes
 app.all("*", async () => {
-  throw new NotFoundError();
+	throw new NotFoundError();
 });
 
 // Handle errors
@@ -48,25 +48,25 @@ app.use(errorHandler);
 //----------- Start the application ------------------//
 
 const start = async () => {
-  try {
-    // Check if JWT_KEY is defined in environment variables
-    if (!process.env.JWT_KEY) throw new Error("JWT_KEY must be defined!");
+	try {
+		// Check if JWT_KEY is defined in environment variables
+		if (!process.env.JWT_KEY) throw new Error("JWT_KEY must be defined!");
 
-    // Connect to MongoDB
-    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    });
-    console.log("Connected to MongoDB!");
-  } catch (err) {
-    console.error(err);
-  }
+		// Connect to MongoDB
+		await mongoose.connect("mongodb://auth-mongo-srv:27017/auth", {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			useCreateIndex: true,
+		});
+		console.log("Connected to MongoDB!");
+	} catch (err) {
+		console.error(err);
+	}
 
-  // Start the server
-  app.listen(3000, () => {
-    console.log("Listening on port 3000!");
-  });
+	// Start the server
+	app.listen(3000, () => {
+		console.log("Listening on port 3000!");
+	});
 };
 
 start();
