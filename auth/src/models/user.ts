@@ -23,16 +23,30 @@ interface UserModel extends Model<UserDoc> {
 //---------------------------------------------------//
 
 // Schema for User model
-const userSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
+const userSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    // Disable version key (__v)
+    versionKey: false,
+    // Transform the response to exclude certain fields
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+      },
+    },
+  }
+);
 
 // Static method to build a User
 userSchema.statics.build = (attrs: UserAttrs) => {
