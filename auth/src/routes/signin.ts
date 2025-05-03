@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
-import validateRequest from "../middlewares/validate-request";
-import jwt from "jsonwebtoken";
-import User from "../models/user";
 import BadRequestError from "../errors/bad-request-error";
+import validateRequest from "../middlewares/validate-request";
+import User from "../models/user";
+import JwtService from "../services/jwt-service";
 import { Password } from "../services/password";
 
 const router = express.Router();
@@ -36,13 +36,10 @@ router.post(
 		if (!passwordsMatch) throw new BadRequestError("Invalid credentials");
 
 		// generate JWT token
-		const userJwt = jwt.sign(
-			{
-				id: existingUser.id,
-				email: existingUser.email,
-			},
-			process.env.JWT_KEY!
-		);
+		const userJwt = JwtService.sign({
+			email,
+			id: existingUser.id,
+		});
 
 		// store JWT token in session
 		req.session = { jwt: userJwt };

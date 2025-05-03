@@ -1,10 +1,10 @@
 import { RequestHandler } from "express";
-import jwt from "jsonwebtoken";
+import JwtService from "../services/jwt-service";
 
 interface UserPayload {
 	id: string;
 	email: string;
-	iat: number;
+	iat?: number;
 }
 
 declare global {
@@ -19,11 +19,7 @@ const currentUser: RequestHandler = (req, res, next) => {
 	if (!req.session?.jwt) return next();
 
 	try {
-		const payload = jwt.verify(
-			req.session.jwt,
-			process.env.JWT_KEY!
-		) as UserPayload;
-
+		const payload = JwtService.verify(req.session.jwt);
 		req.currentUser = payload;
 	} catch (err) {}
 
