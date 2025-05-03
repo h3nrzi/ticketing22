@@ -26,16 +26,16 @@ app.use(
 	cookieSession({
 		signed: false, // Disable signing of cookies
 		secure: true, // Use secure cookies (only send over HTTPS)
-	}),
+	})
 );
 
 //----------- Route handlers ------------------//
 
 // Handle user authentication routes
-app.use(currentUserRouter);
-app.use(signinRouter);
-app.use(signoutRouter);
 app.use(signupRouter);
+app.use(signinRouter);
+app.use(currentUserRouter);
+app.use(signoutRouter);
 
 // Catch-all route for handling undefined routes
 app.all("*", async () => {
