@@ -45,7 +45,7 @@ const userSchema = new Schema(
 				delete ret.password;
 			},
 		},
-	},
+	}
 );
 
 // Static method to build a User

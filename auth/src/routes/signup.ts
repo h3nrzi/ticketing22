@@ -41,7 +41,7 @@ router.post(
 				id: user.id,
 				email: user.email,
 			},
-			process.env.JWT_KEY!,
+			process.env.JWT_KEY!
 		);
 
 		// store JWT token in session
@@ -49,7 +49,7 @@ router.post(
 
 		// send response with user data
 		return res.status(201).json(user);
-	},
+	}
 );
 
 export { router as signupRouter };
