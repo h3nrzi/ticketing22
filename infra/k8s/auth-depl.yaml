@@ -17,11 +17,11 @@ spec:
           image: h3nrzi/auth
           resources:
             limits:
+              memory: "512Mi"
               cpu: "500m"
-              memory: "256Mi"
             requests:
-              cpu: "200m"
-              memory: "128Mi"
+              memory: "256Mi"
+              cpu: "250m"
           env:
             - name: JWT_KEY
               valueFrom:
