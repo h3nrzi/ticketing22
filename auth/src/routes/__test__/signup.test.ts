@@ -1,50 +1,74 @@
 import request from "supertest";
 import app from "../../app";
 
-it("should returns 201 on successful signup", async () => {
-	await request(app)
-		.post("/api/users/signup")
-		.send({
-			email: "test@gmail.com",
-			password: "password",
-		})
-		.expect(201);
-});
+const VALID_USER = {
+	email: "test@gmail.com",
+	password: "password",
+};
 
-it("should returns 400 with an invalid email", async () => {
-	await request(app)
-		.post("/api/users/signup")
-		.send({
-			email: "testgmail.com", // missing @
-			password: "password",
-		})
-		.expect(400);
-});
+const INVALID_EMAIL = "testgmail.com"; // missing @
+const INVALID_PASSWORD = "p"; // less than 4 characters
 
-it("should returns 400 with an invalid password", async () => {
-	await request(app)
-		.post("/api/users/signup")
-		.send({
-			email: "test@gmail.com",
-			password: "p", // less than 4 characters
-		})
-		.expect(400);
-});
+describe("POST /api/users/signup", () => {
+	it("should return 201 and create a new user with valid credentials", async () => {
+		const response = await request(app)
+			.post("/api/users/signup")
+			.send(VALID_USER)
+			.expect(201);
 
-it("should returns 400 with missing email and password", async () => {
-	// missing email
-	await request(app)
-		.post("/api/users/signup")
-		.send({
-			email: "test@gmail.com",
-		})
-		.expect(400);
+		expect(response.body).toHaveProperty("id");
+		expect(response.body.email).toEqual(VALID_USER.email);
+	});
 
-	// missing password
-	await request(app)
-		.post("/api/users/signup")
-		.send({
-			password: "password",
-		})
-		.expect(400);
+	describe("should return 400 for invalid inputs", () => {
+		it("with an invalid email format", async () => {
+			await request(app)
+				.post("/api/users/signup")
+				.send({
+					email: INVALID_EMAIL,
+					password: VALID_USER.password,
+				})
+				.expect(400);
+		});
+
+		it("with a password that is too short", async () => {
+			await request(app)
+				.post("/api/users/signup")
+				.send({
+					email: VALID_USER.email,
+					password: INVALID_PASSWORD,
+				})
+				.expect(400);
+		});
+
+		it("with missing email", async () => {
+			await request(app)
+				.post("/api/users/signup")
+				.send({
+					password: VALID_USER.password,
+				})
+				.expect(400);
+		});
+
+		it("with missing password", async () => {
+			await request(app)
+				.post("/api/users/signup")
+				.send({
+					email: VALID_USER.email,
+				})
+				.expect(400);
+		});
+
+		it("with empty request body", async () => {
+			await request(app).post("/api/users/signup").send({}).expect(400);
+		});
+	});
+
+	it("should not allow duplicate emails", async () => {
+		// Create first user
+		await request(app).post("/api/users/signup").send(VALID_USER).expect(201);
+
+		// Try to create user with same email
+		await request(app).post("/api/users/signup").send(VALID_USER).expect(400);
+	});
 });
