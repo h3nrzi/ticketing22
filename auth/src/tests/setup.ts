@@ -6,6 +6,8 @@ let mongo: MongoMemoryServer;
 
 // Connect to MongoDB before all tests
 beforeAll(async () => {
+	process.env.JWT_KEY = "asdf";
+
 	mongo = await MongoMemoryServer.create();
 	const mongoUri = mongo.getUri();
 
