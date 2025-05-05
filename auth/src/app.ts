@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(
 	cookieSession({
 		signed: false, // Disable signing of cookies
-		secure: true, // Use secure cookies (only send over HTTPS)
+		secure: process.env.NODE_ENV !== "test", // Only send over HTTPS in production
 	})
 );
 
