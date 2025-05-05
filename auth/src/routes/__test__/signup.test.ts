@@ -9,7 +9,7 @@ const VALID_USER = {
 const INVALID_EMAIL = "testgmail.com"; // missing @
 const INVALID_PASSWORD = "p"; // less than 4 characters
 
-describe("User Signup API", () => {
+describe("POST /api/users/signup", () => {
 	describe("Input Validation", () => {
 		describe("Invalid Email Scenarios", () => {
 			it("rejects signup with malformed email", async () => {
