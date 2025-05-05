@@ -2,6 +2,8 @@ import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
 import express from "express";
 import "express-async-errors";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
 import NotFoundError from "./errors/not-found-error";
 import { errorHandler } from "./middlewares/error-handler";
 import { currentUserRouter } from "./routes/current-user";
@@ -24,6 +26,9 @@ app.use(
 		secure: process.env.NODE_ENV !== "test", // Only send over HTTPS in production
 	})
 );
+
+// Swagger UI setup
+app.use("/api/users/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Handle user authentication routes
 app.use(signupRouter);
