@@ -27,13 +27,8 @@ describe("GET /api/users/currentuser", () => {
 
 	describe("Successful Authentication (200)", () => {
 		it("responds with current user details if authenticated", async () => {
-			// Sign up a user
-			const signupResponse = await request(app)
-				.post("/api/users/signup")
-				.send(VALID_USER);
-
-			// Get the cookie from the signup response
-			const cookie = signupResponse.get("Set-Cookie");
+			// Sign up a user and get the cookie
+			const cookie = await global.signup(VALID_USER.email, VALID_USER.password);
 
 			// Make request to current-user endpoint with the cookie
 			const res = await request(app)

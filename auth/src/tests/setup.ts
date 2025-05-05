@@ -1,7 +1,17 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import app from "../app";
+import request from "supertest";
 
+// Extend the global object to include the signup function
+declare global {
+	var signup: (
+		email: string,
+		password: string
+	) => Promise<string[] | undefined>;
+}
+
+// Declare a MongoMemoryServer instance
 let mongo: MongoMemoryServer;
 
 // Connect to MongoDB before all tests
@@ -25,3 +35,14 @@ afterAll(async () => {
 	if (mongo) await mongo.stop();
 	await mongoose.connection.close();
 });
+
+// Helper function to signup a user
+global.signup = async (email: string, password: string) => {
+	// Signup a user
+	const res = await request(app)
+		.post("/api/users/signup")
+		.send({ email, password });
+
+	// Return the cookie
+	return res.get("Set-Cookie");
+};

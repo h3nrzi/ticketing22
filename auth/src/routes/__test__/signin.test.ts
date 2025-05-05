@@ -33,8 +33,8 @@ describe("POST /api/users/signin", () => {
 
 		describe("Invalid Credentials", () => {
 			it("fails if email is invalid", async () => {
-				// Create user
-				await request(app).post("/api/users/signup").send(VALID_USER);
+				// Sign up a user
+				await global.signup(VALID_USER.email, VALID_USER.password);
 
 				// Signin user with invalid email
 				const res = await request(app).post("/api/users/signin").send({
@@ -47,8 +47,8 @@ describe("POST /api/users/signin", () => {
 			});
 
 			it("fails if password is invalid", async () => {
-				// Create user
-				await request(app).post("/api/users/signup").send(VALID_USER);
+				// Sign up a user
+				await global.signup(VALID_USER.email, VALID_USER.password);
 
 				// Signin user with invalid password
 				const res = await request(app).post("/api/users/signin").send({
@@ -76,8 +76,8 @@ describe("POST /api/users/signin", () => {
 
 	describe("Successful Signin (200)", () => {
 		it("responds with cookie and user details, if user exists", async () => {
-			// Create user
-			await request(app).post("/api/users/signup").send(VALID_USER);
+			// Sign up a user
+			await global.signup(VALID_USER.email, VALID_USER.password);
 
 			// Signin user
 			const res = await request(app).post("/api/users/signin").send(VALID_USER);
