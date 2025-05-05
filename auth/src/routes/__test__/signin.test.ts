@@ -29,16 +29,6 @@ describe("POST /api/users/signin", () => {
 				expect(res.status).toBe(400);
 				expect(res.body.errors);
 			});
-
-			it("fails if user not found", async () => {
-				const res = await request(app).post("/api/users/signin").send({
-					email: "nonexistent@gmail.com",
-					password: VALID_USER.password,
-				});
-
-				expect(res.status).toBe(400);
-				expect(res.body.errors);
-			});
 		});
 
 		describe("Invalid Credentials", () => {
@@ -69,6 +59,18 @@ describe("POST /api/users/signin", () => {
 				expect(res.status).toBe(400);
 				expect(res.body.errors);
 			});
+		});
+	});
+
+	describe("Not Found Errors (404)", () => {
+		it("fails if user not found", async () => {
+			const res = await request(app).post("/api/users/signin").send({
+				email: "nonexistent@gmail.com",
+				password: VALID_USER.password,
+			});
+
+			expect(res.status).toBe(404);
+			expect(res.body.errors);
 		});
 	});
 

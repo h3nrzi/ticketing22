@@ -5,6 +5,7 @@ import validateRequest from "../middlewares/validate-request";
 import User from "../models/user";
 import JwtService from "../services/jwt-service";
 import { Password } from "../services/password";
+import NotFoundError from "../errors/not-found-error";
 
 const router = express.Router();
 
@@ -23,9 +24,9 @@ router.post(
 		const { email, password } = req.body;
 
 		// check if user exists
-		// if user does not exist, throw a BadRequestError
+		// if user does not exist, throw a NotFoundError
 		const existingUser = await User.findOne({ email });
-		if (!existingUser) throw new BadRequestError("Invalid credentials");
+		if (!existingUser) throw new NotFoundError("User not found!");
 
 		// check if password is valid
 		// if passwords do not match, throw a BadRequestError

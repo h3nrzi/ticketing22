@@ -33,7 +33,7 @@ app.use(signoutRouter);
 
 // Catch-all route for handling undefined routes
 app.all("*", async () => {
-	throw new NotFoundError();
+	throw new NotFoundError("Route not found!");
 });
 
 // Handle errors
