@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { PropsWithChildren } from "react";
-import "./globals.css";
+import "@/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.css";
+import "@/styles/custom-bootstrap.css";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
