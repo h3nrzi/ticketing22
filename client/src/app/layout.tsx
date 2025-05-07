@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react";
 import "@/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "@/styles/custom-bootstrap.css";
+import { ClientToaster } from "./client-toaster";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -12,7 +13,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<html lang="en">
-			<body>{children}</body>
+			<body>
+				{children}
+				<ClientToaster />
+			</body>
 		</html>
 	);
 }

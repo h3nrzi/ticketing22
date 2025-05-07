@@ -1,17 +1,27 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import ErrorDisplay from "@/components/error-display";
 import { useFormState } from "react-dom";
 import { signUp } from "../actions";
 import SubmitButton from "@/components/submit-button";
-import ErrorResponse from "@/types/ErrorResponse";
+import { FormState } from "@/types/FormState";
 import FormField from "@/components/form-field";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const SignUpPage = () => {
-	const initialState: ErrorResponse = { errors: [] };
+	const initialState: FormState = { errors: [], success: false };
 	const [state, formAction] = useFormState(signUp, initialState);
+	const router = useRouter();
+
+	useEffect(() => {
+		if (state?.success) {
+			toast.success("Account created successfully!");
+			router.push("/");
+		}
+	}, [state, router]);
 
 	return (
 		<div className="container mt-5">

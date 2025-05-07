@@ -3,6 +3,6 @@ interface Error {
 	message: string;
 }
 
-export default interface ErrorResponse {
+export interface ErrorResponse {
 	errors: Error[];
 }

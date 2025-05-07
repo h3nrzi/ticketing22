@@ -1,12 +1,12 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { ErrorResponse } from "@/types/ErrorResponse";
+import { FormState } from "@/types/FormState";
 import axios, { AxiosError } from "axios";
-import ErrorResponse from "@/types/ErrorResponse";
 import https from "https";
 
 export async function signUp(
-	prevState: ErrorResponse | undefined,
+	prevState: FormState | undefined,
 	formData: FormData
 ) {
 	// Get the email and password from the form data
@@ -27,11 +27,12 @@ export async function signUp(
 				}),
 			}
 		);
+
+		// Return success response
+		return { success: true, errors: [] };
 	} catch (err) {
 		// Handle axios error response
-		return (err as AxiosError<ErrorResponse>).response?.data;
+		const errorData = (err as AxiosError<ErrorResponse>).response?.data;
+		return { success: false, ...errorData };
 	}
-
-	// Redirect to the home page after successful signup
-	redirect("/");
 }
