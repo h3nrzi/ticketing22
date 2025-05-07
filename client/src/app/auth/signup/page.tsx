@@ -6,36 +6,7 @@ import { useFormState } from "react-dom";
 import { signUp } from "../actions";
 import SubmitButton from "@/components/submit-button";
 import ErrorResponse from "@/types/ErrorResponse";
-
-interface FormFieldProps {
-	label: string;
-	name: string;
-	type: string;
-	placeholder: string;
-	errors?: ErrorResponse["errors"];
-}
-
-const FormField = ({
-	label,
-	name,
-	type,
-	placeholder,
-	errors,
-}: FormFieldProps) => (
-	<div className="form-group mb-3">
-		<label className="form-label" htmlFor={name}>
-			{label}
-		</label>
-		<input
-			className="form-control"
-			type={type}
-			name={name}
-			id={name}
-			placeholder={placeholder}
-		/>
-		<ErrorDisplay errors={errors} field={name} />
-	</div>
-);
+import FormField from "@/components/form-field";
 
 const SignUpPage = () => {
 	const initialState: ErrorResponse = { errors: [] };
