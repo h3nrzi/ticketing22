@@ -14,20 +14,24 @@ export async function signUp(
 	const password = formData.get("password");
 
 	try {
-		// Send the email and password to the server using axios
+		// Send the email and password to the server
 		await axios.post(
 			"https://ticketing.dev/api/users/signup",
-			{ email, password },
 			{
-				// Ignore self-signed certificate
-				httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+				email,
+				password,
+			},
+			{
+				httpsAgent: new https.Agent({
+					rejectUnauthorized: false, // Ignore self-signed certificate
+				}),
 			}
 		);
-
-		// Redirect to the home page after successful signup
-		redirect("/");
 	} catch (err) {
 		// Handle axios error response
 		return (err as AxiosError<ErrorResponse>).response?.data;
 	}
+
+	// Redirect to the home page after successful signup
+	redirect("/");
 }
