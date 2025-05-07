@@ -2,6 +2,7 @@
 
 import React, { FormEvent } from "react";
 import { useState } from "react";
+import axios from "axios";
 
 const SignUpPage = () => {
 	const [email, setEmail] = useState("");
@@ -9,7 +10,13 @@ const SignUpPage = () => {
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log(email, password);
+
+		const res = await axios.post("https://ticketing.dev/api/users/signup", {
+			email,
+			password,
+		});
+
+		console.log(res);
 	};
 	return (
 		<form className="container mt-5 w-50" onSubmit={handleSubmit}>
