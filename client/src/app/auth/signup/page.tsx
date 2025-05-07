@@ -2,9 +2,9 @@
 
 import React, { FormEvent } from "react";
 import { useState } from "react";
-import axios, { AxiosError } from "axios";
 import ErrorResponse from "@/types/ErrorResponse";
 import ErrorDisplay from "@/components/error-display";
+import { signUp } from "../actions";
 
 const SignUpPage = () => {
 	const [email, setEmail] = useState("");
@@ -17,14 +17,16 @@ const SignUpPage = () => {
 		e.preventDefault();
 
 		try {
-			const res = await axios.post("http://ticketing.dev/api/users/signup", {
-				email,
-				password,
-			});
+			const formData = new FormData();
+			formData.append("email", email);
+			formData.append("password", password);
 
-			console.log(res);
+			const result = await signUp(formData);
+			if (result) {
+				setErrorResponse(result);
+			}
 		} catch (error) {
-			setErrorResponse((error as AxiosError).response?.data);
+			console.error("Unexpected error:", error);
 		}
 	};
 

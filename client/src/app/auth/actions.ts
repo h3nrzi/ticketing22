@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import ErrorResponse from "@/types/ErrorResponse";
+import https from "https";
 
 export async function signUp(formData: FormData) {
 	// Get the email and password from the form data
@@ -11,10 +12,17 @@ export async function signUp(formData: FormData) {
 
 	try {
 		// Send the email and password to the server using axios
-		await axios.post("https://ticketing.dev/api/users/signup", {
-			email,
-			password,
-		});
+		await axios.post(
+			"https://ticketing.dev/api/users/signup",
+			{
+				email,
+				password,
+			},
+			{
+				// Ignore self-signed certificate
+				httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+			}
+		);
 
 		// Redirect to the home page after successful signup
 		redirect("/");
