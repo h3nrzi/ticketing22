@@ -2,9 +2,32 @@
 
 import React from "react";
 import ErrorDisplay from "@/components/error-display";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import { signUp } from "../actions";
 import ErrorResponse from "@/types/ErrorResponse";
+
+// Separate component for the submit button to use useFormStatus
+function SubmitButton() {
+	const { pending } = useFormStatus();
+
+	if (pending) {
+		return (
+			<button className="btn btn-primary" type="submit" disabled={pending}>
+				<span
+					className="spinner-border spinner-border-sm"
+					role="status"
+					aria-hidden="true"
+				/>
+			</button>
+		);
+	}
+
+	return (
+		<button className="btn btn-primary" type="submit">
+			Sign Up
+		</button>
+	);
+}
 
 const SignUpPage = () => {
 	const initialState: ErrorResponse = { errors: [] };
@@ -44,9 +67,7 @@ const SignUpPage = () => {
 				<ErrorDisplay errors={state?.errors || []} field="password" />
 			</div>
 
-			<button className="btn btn-primary" type="submit">
-				Sign Up
-			</button>
+			<SubmitButton />
 
 			{/* Error Message that is not related to fields */}
 			<div className="mt-5">
