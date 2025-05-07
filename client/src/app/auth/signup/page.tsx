@@ -7,6 +7,7 @@ import { signUp } from "../actions";
 import SubmitButton from "@/components/submit-button";
 import ErrorResponse from "@/types/ErrorResponse";
 import FormField from "@/components/form-field";
+import Link from "next/link";
 
 const SignUpPage = () => {
 	const initialState: ErrorResponse = { errors: [] };
@@ -38,6 +39,10 @@ const SignUpPage = () => {
 						<SubmitButton className="btn btn-primary w-100 mb-3">
 							Sign Up
 						</SubmitButton>
+
+						<Link href="/auth/login" className="btn btn-secondary w-100 mb-3">
+							Already have an account? Login
+						</Link>
 
 						{/* Display general errors */}
 						<ErrorDisplay errors={state?.errors} />
