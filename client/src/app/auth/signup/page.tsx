@@ -44,7 +44,7 @@ const SignUpPage = () => {
 			</div>
 
 			{/* Shows a spinner when the form is being submitted */}
-			<SubmitButton>Sign Up</SubmitButton>
+			<SubmitButton className="btn btn-primary">Sign Up</SubmitButton>
 
 			{/* Error Message that is not related to fields */}
 			<div className="mt-5">
