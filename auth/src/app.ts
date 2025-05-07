@@ -3,6 +3,7 @@ import cookieSession from "cookie-session";
 import express from "express";
 import "express-async-errors";
 import swaggerUi from "swagger-ui-express";
+import cors from "cors";
 import { swaggerSpec } from "./config/swagger";
 import NotFoundError from "./errors/not-found-error";
 import { errorHandler } from "./middlewares/error-handler";
@@ -15,6 +16,19 @@ const app = express();
 
 // To enable trust proxy for secure cookies
 app.set("trust proxy", true);
+
+// Configure CORS
+app.use(
+	cors({
+		// Client application URLs
+		origin: [
+			"http://localhost:3000",
+			"http://localhost:5173",
+			"https://ticketing.vercel.app",
+		],
+		credentials: true, // Allow cookies to be sent with requests
+	})
+);
 
 // To parse JSON requests
 app.use(bodyParser.json());
