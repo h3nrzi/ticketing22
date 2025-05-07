@@ -17,10 +17,7 @@ export async function signUp(
 		// Send the email and password to the server using axios
 		await axios.post(
 			"https://ticketing.dev/api/users/signup",
-			{
-				email,
-				password,
-			},
+			{ email, password },
 			{
 				// Ignore self-signed certificate
 				httpsAgent: new https.Agent({ rejectUnauthorized: false }),
@@ -30,11 +27,7 @@ export async function signUp(
 		// Redirect to the home page after successful signup
 		redirect("/");
 	} catch (err) {
-		// Log the error
-		console.error("Signup error:", err);
-
 		// Handle axios error response
-		const errorResponse = (err as AxiosError<ErrorResponse>).response?.data;
-		return errorResponse || { errors: [] };
+		return (err as AxiosError<ErrorResponse>).response?.data;
 	}
 }

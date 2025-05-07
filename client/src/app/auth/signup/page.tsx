@@ -4,53 +4,76 @@ import React from "react";
 import ErrorDisplay from "@/components/error-display";
 import { useFormState } from "react-dom";
 import { signUp } from "../actions";
-import ErrorResponse from "@/types/ErrorResponse";
 import SubmitButton from "@/components/submit-button";
+import ErrorResponse from "@/types/ErrorResponse";
+
+interface FormFieldProps {
+	label: string;
+	name: string;
+	type: string;
+	placeholder: string;
+	errors?: ErrorResponse["errors"];
+}
+
+const FormField = ({
+	label,
+	name,
+	type,
+	placeholder,
+	errors,
+}: FormFieldProps) => (
+	<div className="form-group mb-3">
+		<label className="form-label" htmlFor={name}>
+			{label}
+		</label>
+		<input
+			className="form-control"
+			type={type}
+			name={name}
+			id={name}
+			placeholder={placeholder}
+		/>
+		<ErrorDisplay errors={errors} field={name} />
+	</div>
+);
 
 const SignUpPage = () => {
 	const initialState: ErrorResponse = { errors: [] };
 	const [state, formAction] = useFormState(signUp, initialState);
 
 	return (
-		<form className="container mt-5 w-50" action={formAction}>
-			<h1 className="text-center mb-5">Sign Up</h1>
+		<div className="container mt-5">
+			<div className="row justify-content-center">
+				<div className="col-md-6">
+					<form className="card p-4" action={formAction}>
+						<h1 className="text-center mb-4">Sign Up</h1>
 
-			{/* Email */}
-			<div className="form-group">
-				<label className="form-label" htmlFor="email">
-					Email
-				</label>
-				<input
-					className="form-control"
-					type="email"
-					name="email"
-					placeholder="Email"
-				/>
-				<ErrorDisplay errors={state?.errors || []} field="email" />
+						<FormField
+							label="Email"
+							name="email"
+							type="email"
+							placeholder="Enter your email"
+							errors={state?.errors}
+						/>
+
+						<FormField
+							label="Password"
+							name="password"
+							type="password"
+							placeholder="Enter your password"
+							errors={state?.errors}
+						/>
+
+						<SubmitButton className="btn btn-primary w-100 mb-3">
+							Sign Up
+						</SubmitButton>
+
+						{/* Display general errors */}
+						<ErrorDisplay errors={state?.errors} />
+					</form>
+				</div>
 			</div>
-
-			{/* Password */}
-			<div className="form-group">
-				<label className="form-label" htmlFor="password">
-					Password
-				</label>
-				<input
-					className="form-control"
-					type="password"
-					name="password"
-					placeholder="Password"
-				/>
-				<ErrorDisplay errors={state?.errors || []} field="password" />
-			</div>
-
-			{/* Shows a spinner when the form is being submitted */}
-			<SubmitButton className="btn btn-primary">Sign Up</SubmitButton>
-
-			{/* Error Message that is not related to fields */}
-			<div className="mt-5">
-				<ErrorDisplay errors={state?.errors || []} />
-			</div>
-		</form>
+		</div>
 	);
 };
 
