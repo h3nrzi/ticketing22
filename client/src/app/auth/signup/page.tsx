@@ -1,37 +1,17 @@
 "use client";
 
-import React, { FormEvent } from "react";
-import { useState } from "react";
-import ErrorResponse from "@/types/ErrorResponse";
+import React from "react";
 import ErrorDisplay from "@/components/error-display";
+import { useFormState } from "react-dom";
 import { signUp } from "../actions";
+import ErrorResponse from "@/types/ErrorResponse";
 
 const SignUpPage = () => {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [errorResponse, setErrorResponse] = useState<ErrorResponse>({
-		errors: [],
-	});
-
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		try {
-			const formData = new FormData();
-			formData.append("email", email);
-			formData.append("password", password);
-
-			const result = await signUp(formData);
-			if (result) {
-				setErrorResponse(result);
-			}
-		} catch (error) {
-			console.error("Unexpected error:", error);
-		}
-	};
+	const initialState: ErrorResponse = { errors: [] };
+	const [state, formAction] = useFormState(signUp, initialState);
 
 	return (
-		<form className="container mt-5 w-50" onSubmit={handleSubmit}>
+		<form className="container mt-5 w-50" action={formAction}>
 			<h1 className="text-center mb-5">Sign Up</h1>
 
 			{/* Email */}
@@ -44,10 +24,9 @@ const SignUpPage = () => {
 					type="email"
 					name="email"
 					placeholder="Email"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
+					required
 				/>
-				<ErrorDisplay errors={errorResponse.errors} field="email" />
+				<ErrorDisplay errors={state?.errors || []} field="email" />
 			</div>
 
 			{/* Password */}
@@ -60,10 +39,9 @@ const SignUpPage = () => {
 					type="password"
 					name="password"
 					placeholder="Password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
+					required
 				/>
-				<ErrorDisplay errors={errorResponse.errors} field="password" />
+				<ErrorDisplay errors={state?.errors || []} field="password" />
 			</div>
 
 			<button className="btn btn-primary" type="submit">
@@ -72,7 +50,7 @@ const SignUpPage = () => {
 
 			{/* Error Message that is not related to fields */}
 			<div className="mt-5">
-				<ErrorDisplay errors={errorResponse.errors} />
+				<ErrorDisplay errors={state?.errors || []} />
 			</div>
 		</form>
 	);

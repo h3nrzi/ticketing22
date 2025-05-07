@@ -5,7 +5,10 @@ import axios, { AxiosError } from "axios";
 import ErrorResponse from "@/types/ErrorResponse";
 import https from "https";
 
-export async function signUp(formData: FormData) {
+export async function signUp(
+	prevState: ErrorResponse | undefined,
+	formData: FormData
+) {
 	// Get the email and password from the form data
 	const email = formData.get("email");
 	const password = formData.get("password");
@@ -32,6 +35,6 @@ export async function signUp(formData: FormData) {
 
 		// Handle axios error response
 		const errorResponse = (err as AxiosError<ErrorResponse>).response?.data;
-		return errorResponse;
+		return errorResponse || { errors: [] };
 	}
 }
