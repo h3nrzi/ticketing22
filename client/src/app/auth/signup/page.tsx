@@ -25,7 +25,6 @@ const SignUpPage = () => {
 					type="email"
 					name="email"
 					placeholder="Email"
-					required
 				/>
 				<ErrorDisplay errors={state?.errors || []} field="email" />
 			</div>
@@ -40,11 +39,11 @@ const SignUpPage = () => {
 					type="password"
 					name="password"
 					placeholder="Password"
-					required
 				/>
 				<ErrorDisplay errors={state?.errors || []} field="password" />
 			</div>
 
+			{/* Shows a spinner when the form is being submitted */}
 			<SubmitButton>Sign Up</SubmitButton>
 
 			{/* Error Message that is not related to fields */}
