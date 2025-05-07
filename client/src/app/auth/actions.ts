@@ -1,6 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import axios, { AxiosError } from "axios";
+import ErrorResponse from "@/types/ErrorResponse";
 
 export async function signUp(formData: FormData) {
 	// Get the email and password from the form data
@@ -8,31 +10,20 @@ export async function signUp(formData: FormData) {
 	const password = formData.get("password");
 
 	try {
-		// Send the email and password to the server
-		const response = await fetch("https://ticketing.dev/api/users/signup", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ email, password }),
+		// Send the email and password to the server using axios
+		await axios.post("https://ticketing.dev/api/users/signup", {
+			email,
+			password,
 		});
 
-		// If the response is not ok, return the error
-		if (!response.ok) return await response.json();
-
-		// Redirect to the signin page
-		redirect("/auth/signin");
-	} catch (error) {
+		// Redirect to the home page after successful signup
+		redirect("/");
+	} catch (err) {
 		// Log the error
-		console.error("Signup error:", error);
+		console.error("Signup error:", err);
 
-		// Return the error
-		return {
-			errors: [
-				{
-					message: "An unexpected error occurred",
-				},
-			],
-		};
+		// Handle axios error response
+		const errorResponse = (err as AxiosError<ErrorResponse>).response?.data;
+		return errorResponse;
 	}
 }
