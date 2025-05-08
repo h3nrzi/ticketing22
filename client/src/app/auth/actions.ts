@@ -20,9 +20,7 @@ export const signUp = async (prevState: FormState, formData: FormData) => {
 				password,
 			},
 			{
-				httpsAgent: new https.Agent({
-					rejectUnauthorized: false, // Ignore self-signed certificate
-				}),
+				httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Ignore self-signed certificate
 				withCredentials: true, // Send cookies with the request
 			}
 		);
