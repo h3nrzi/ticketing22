@@ -17,8 +17,8 @@ export const signUp = async (prevState: FormState, formData: FormData) => {
 			"https://ticketing.dev/api/users/signup",
 			{ email, password },
 			{
-				httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Ignore self-signed certificate
-				withCredentials: true, // Send cookies with the request
+				httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+				withCredentials: true,
 			}
 		);
 

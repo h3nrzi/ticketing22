@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import ErrorDisplay from "@/components/error-display";
 import { useFormState } from "react-dom";
-import { signUp } from "../auth-actions";
+import { signUp } from "../../../lib/actions/auth-actions";
 import SubmitButton from "@/components/submit-button";
 import { FormState } from "@/types/FormState";
 import FormField from "@/components/form-field";
