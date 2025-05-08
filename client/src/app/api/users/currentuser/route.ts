@@ -1,24 +1,31 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
+import https from "https";
+
 export async function GET() {
 	try {
 		// Get the JWT token from the cookie
 		const cookieStore = cookies();
 		const token = cookieStore.get("session");
 
+		// If no token is present, return null for currentUser
+		if (!token) {
+			return NextResponse.json({ currentUser: null });
+		}
+
 		// Make request to the auth service with axios
 		const res = await axios.get("https://ticketing.dev/api/users/currentuser", {
-			headers: { Cookie: token?.value },
+			headers: { Cookie: token.value },
+			httpsAgent: new https.Agent({
+				rejectUnauthorized: false, // Ignore self-signed certificate
+			}),
+			withCredentials: true, // Send cookies with the request
 		});
 
 		return NextResponse.json(res.data);
 	} catch (error) {
-		console.log((error as AxiosError).response?.data);
-
-		return NextResponse.json(
-			{ errors: [{ message: "Error fetching current user" }] },
-			{ status: 500 }
-		);
+		console.error("Error fetching current user:", error);
+		return NextResponse.json({ currentUser: null });
 	}
 }
