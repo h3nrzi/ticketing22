@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import ErrorDisplay from "@/components/error-display";
 import { useFormState } from "react-dom";
-import { signUp } from "../../../lib/actions/auth-actions";
+import { signin } from "../../../lib/actions/auth-actions";
 import SubmitButton from "@/components/submit-button";
 import { FormState } from "@/types/FormState";
 import FormField from "@/components/form-field";
@@ -11,14 +11,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-const SignUpPage = () => {
+const SignInPage = () => {
 	const initialState: FormState = { errors: [], success: false };
-	const [state, formAction] = useFormState(signUp, initialState);
+	const [state, formAction] = useFormState(signin, initialState);
 	const router = useRouter();
 
 	useEffect(() => {
 		if (state?.success) {
-			toast.success("Account created successfully!");
+			toast.success("Logged in successfully!");
 			router.push("/");
 		}
 	}, [state, router]);
@@ -28,7 +28,7 @@ const SignUpPage = () => {
 			<div className="row justify-content-center">
 				<div className="col-md-6">
 					<form className="card p-4" action={formAction}>
-						<h1 className="text-center mb-4">Sign Up</h1>
+						<h1 className="text-center mb-4">Login</h1>
 
 						<FormField
 							label="Email"
@@ -47,11 +47,11 @@ const SignUpPage = () => {
 						/>
 
 						<SubmitButton className="btn btn-primary w-100 mb-3">
-							Sign Up
+							Login
 						</SubmitButton>
 
-						<Link href="/auth/signin" className="btn btn-secondary w-100 mb-3">
-							Already have an account? Login
+						<Link href="/auth/signup" className="btn btn-secondary w-100 mb-3">
+							Don&apos;t have an account? Sign Up
 						</Link>
 
 						{/* Display general errors */}
@@ -63,4 +63,4 @@ const SignUpPage = () => {
 	);
 };
 
-export default SignUpPage;
+export default SignInPage;
