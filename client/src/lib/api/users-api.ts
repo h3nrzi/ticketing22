@@ -1,8 +1,8 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { cookies } from "next/headers";
-import https from "https";
 import { ErrorResponse } from "@/types/ErrorResponse";
 import { User } from "@/types/User";
+import axiosInstance from "@/lib/utils/axios";
 
 export async function getCurrentUser() {
 	// Get the session cookie
@@ -11,12 +11,10 @@ export async function getCurrentUser() {
 
 	try {
 		// Make the request to the auth service
-		const res = await axios.get<{ currentUser: User }>(
-			"https://ticketing.dev/api/users/currentuser",
+		const res = await axiosInstance.get<{ currentUser: User }>(
+			"/api/users/currentuser",
 			{
 				headers: token ? { Cookie: token.value } : {},
-				httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-				withCredentials: true,
 			}
 		);
 

@@ -2,9 +2,9 @@
 
 import { ErrorResponse } from "@/types/ErrorResponse";
 import { FormState } from "@/types/FormState";
-import axios, { AxiosError } from "axios";
-import https from "https";
+import { AxiosError } from "axios";
 import { cookies } from "next/headers";
+import axiosInstance from "../utils/axios";
 
 export const signUp = async (prevState: FormState, formData: FormData) => {
 	// Get the email and password from the form data
@@ -13,14 +13,10 @@ export const signUp = async (prevState: FormState, formData: FormData) => {
 
 	try {
 		// Send the email and password to the server
-		const res = await axios.post(
-			"https://ticketing.dev/api/users/signup",
-			{ email, password },
-			{
-				httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-				withCredentials: true,
-			}
-		);
+		const res = await axiosInstance.post("/api/users/signup", {
+			email,
+			password,
+		});
 
 		// Get the session cookie
 		const sessionCookie = res.headers["set-cookie"]?.[0];
