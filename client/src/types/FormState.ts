@@ -6,5 +6,4 @@ interface Error {
 export interface FormState {
 	errors: Error[];
 	success: boolean;
-	token: string;
 }

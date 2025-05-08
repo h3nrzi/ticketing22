@@ -24,6 +24,9 @@ app.use(
 	cookieSession({
 		signed: false, // Disable signing of cookies
 		secure: process.env.NODE_ENV !== "test", // Only send over HTTPS in production
+		httpOnly: true, // Prevent client-side JavaScript from accessing the cookie
+		sameSite: "none", // Allow cookies to be sent to any site
+		path: "/", // Set the path to the root of the domain
 	})
 );
 
