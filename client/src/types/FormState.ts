@@ -1,6 +1,10 @@
-import { ErrorResponse } from "./ErrorResponse";
+interface Error {
+	field?: string;
+	message: string;
+}
 
 export interface FormState {
-	errors?: ErrorResponse["errors"];
-	success?: boolean;
+	errors: Error[];
+	success: boolean;
+	token: string;
 }

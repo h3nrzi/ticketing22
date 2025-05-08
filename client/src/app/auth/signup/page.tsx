@@ -11,16 +11,39 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
+const initialState: FormState = {
+	errors: [],
+	success: false,
+	token: "",
+};
+
 const SignUpPage = () => {
-	const initialState: FormState = { errors: [], success: false };
 	const [state, formAction] = useFormState(signUp, initialState);
 	const router = useRouter();
 
 	useEffect(() => {
-		if (state?.success) {
-			toast.success("Account created successfully!");
-			router.push("/");
+		async function handleSuccess() {
+			if (state?.success && state.token) {
+				try {
+					// Set the session cookie
+					await fetch("/api/auth/set-cookie", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ cookie: state.token }),
+					});
+
+					toast.success("Account created successfully!");
+					router.push("/");
+				} catch (error) {
+					console.error("Error setting cookie:", error);
+					toast.error("Error setting authentication cookie");
+				}
+			}
 		}
+
+		handleSuccess();
 	}, [state, router]);
 
 	return (

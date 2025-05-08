@@ -5,17 +5,16 @@ import { FormState } from "@/types/FormState";
 import axios, { AxiosError } from "axios";
 import https from "https";
 
-export async function signUp(
-	prevState: FormState | undefined,
-	formData: FormData
-) {
+export const signUp = async (prevState: FormState, formData: FormData) => {
 	// Get the email and password from the form data
 	const email = formData.get("email");
 	const password = formData.get("password");
 
 	try {
+		console.log("Sending signup request...");
+
 		// Send the email and password to the server
-		await axios.post(
+		const res = await axios.post(
 			"https://ticketing.dev/api/users/signup",
 			{
 				email,
@@ -25,14 +24,31 @@ export async function signUp(
 				httpsAgent: new https.Agent({
 					rejectUnauthorized: false, // Ignore self-signed certificate
 				}),
+				withCredentials: true, // Send cookies with the request
 			}
 		);
 
+		// Get the session cookie from the response
+		const sessionCookie = res.headers["set-cookie"]?.[0];
+
 		// Return success response
-		return { success: true, errors: [] };
+		return {
+			success: true,
+			errors: [],
+			token: sessionCookie,
+		};
 	} catch (err) {
-		// Handle axios error response
-		const errorData = (err as AxiosError<ErrorResponse>).response?.data;
-		return { success: false, ...errorData };
+		console.error("Signup error:", err);
+
+		// Get the errors from the response
+		const errors =
+			(err as AxiosError<ErrorResponse>).response?.data.errors || [];
+
+		// Return error response
+		return {
+			success: false,
+			errors,
+			token: "",
+		};
 	}
-}
+};
