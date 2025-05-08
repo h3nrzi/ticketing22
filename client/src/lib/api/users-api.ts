@@ -1,13 +1,12 @@
 import { AxiosError } from "axios";
-import { cookies } from "next/headers";
 import { ErrorResponse } from "@/types/ErrorResponse";
 import { User } from "@/types/User";
 import axiosInstance from "@/lib/utils/axios";
+import { cookieManager } from "../utils/cookie-utils";
 
 export async function getCurrentUser() {
 	// Get the session cookie
-	const cookieStore = cookies();
-	const token = cookieStore.get("session");
+	const token = cookieManager.get("session");
 
 	try {
 		// Make the request to the auth service

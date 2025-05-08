@@ -3,7 +3,7 @@
 import { ErrorResponse } from "@/types/ErrorResponse";
 import { FormState } from "@/types/FormState";
 import { AxiosError } from "axios";
-import { cookies } from "next/headers";
+import { cookieManager } from "../utils/cookie-utils";
 import axiosInstance from "../utils/axios";
 
 export const signUp = async (prevState: FormState, formData: FormData) => {
@@ -18,18 +18,9 @@ export const signUp = async (prevState: FormState, formData: FormData) => {
 			password,
 		});
 
-		// Get the session cookie
+		// Get and Set the session cookie
 		const sessionCookie = res.headers["set-cookie"]?.[0];
-
-		// Set the session cookie
-		if (sessionCookie) {
-			cookies().set("session", sessionCookie, {
-				httpOnly: true,
-				secure: process.env.NODE_ENV !== "test",
-				sameSite: "none",
-				path: "/",
-			});
-		}
+		if (sessionCookie) cookieManager.set("session", sessionCookie);
 
 		// Return success response
 		return { success: true, errors: [] };
