@@ -1,6 +1,6 @@
 import React from "react";
-import ErrorDisplay from "@/components/error-display";
-import ErrorResponse from "@/types/ErrorResponse";
+import ErrorDisplay from "@/components/ui/error-display";
+import { ErrorResponse } from "@/types/ErrorResponse";
 
 interface Props {
 	label: string;

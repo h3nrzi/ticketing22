@@ -1,4 +1,4 @@
-import ErrorResponse from "@/types/ErrorResponse";
+import { ErrorResponse } from "@/types/ErrorResponse";
 
 interface ErrorDisplayProps {
 	field?: string;
