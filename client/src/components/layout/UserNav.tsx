@@ -15,7 +15,7 @@ export default function UserNav({ email }: UserNavProps) {
 		try {
 			await axios.post("/api/users/signout", {}, { withCredentials: true });
 			router.refresh();
-			toast.success("Logout successfully!");
+			toast.success("Logged out successfully! See you next time!");
 		} catch (error) {
 			console.error((error as AxiosError).response?.data);
 		}
@@ -26,7 +26,7 @@ export default function UserNav({ email }: UserNavProps) {
 			<span className="nav-item nav-link">{email}</span>
 			<button
 				onClick={handleSignOut}
-				className="nav-item nav-link btn btn-link"
+				className="nav-item nav-link btn border btn-sm"
 			>
 				Sign Out
 			</button>
