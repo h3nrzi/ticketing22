@@ -3,8 +3,8 @@
 import { ErrorResponse } from "@/types/ErrorResponse";
 import { FormState } from "@/types/FormState";
 import { AxiosError } from "axios";
-import { cookieManager } from "../utils/cookie-utils";
 import axiosInstance from "../utils/axios";
+import { cookieManager } from "../utils/cookie-utils";
 
 export const signUp = async (prevState: FormState, formData: FormData) => {
 	// Get the email and password from the form data

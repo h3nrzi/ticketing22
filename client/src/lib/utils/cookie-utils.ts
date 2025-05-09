@@ -13,9 +13,9 @@ export class CookieManager {
 	private static instance: CookieManager;
 	private readonly defaultOptions: CookieOptions = {
 		httpOnly: true,
-		secure: process.env.NODE_ENV !== "test",
-		sameSite: "none",
-		path: "/",
+		secure: false,
+		// sameSite: "none",
+		// path: "/",
 	};
 
 	private constructor() {}

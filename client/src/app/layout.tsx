@@ -4,7 +4,6 @@ import "@/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "@/styles/custom-bootstrap.css";
 import { ClientToaster } from "./client-toaster";
-import { getCurrentUser } from "@/lib/api/users-api";
 import Header from "@/components/Header";
 
 export const metadata: Metadata = {
@@ -13,12 +12,10 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: PropsWithChildren) {
-	const { data } = await getCurrentUser();
-
 	return (
 		<html lang="en">
 			<body>
-				<Header currentUser={data?.currentUser || null} />
+				<Header />
 				{children}
 				<ClientToaster />
 			</body>

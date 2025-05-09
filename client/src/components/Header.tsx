@@ -1,19 +1,10 @@
-"use client";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import UserNav from "./UserNav";
+import AuthLinks from "./AuthLinks";
+import { getCurrentUser } from "@/lib/api/users-api";
 
-interface HeaderProps {
-	currentUser: { email: string } | null;
-}
-
-export default function Header({ currentUser }: HeaderProps) {
-	const router = useRouter();
-
-	const handleSignOut = () => {
-		// cookieManager.delete("session");
-		router.refresh();
-	};
+export default async function Header() {
+	const { data } = await getCurrentUser();
 
 	return (
 		<nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -22,25 +13,10 @@ export default function Header({ currentUser }: HeaderProps) {
 					Ticketing
 				</Link>
 				<div className="navbar-nav ms-auto">
-					{currentUser ? (
-						<>
-							<span className="nav-item nav-link">{currentUser.email}</span>
-							<button
-								onClick={handleSignOut}
-								className="nav-item nav-link btn btn-link"
-							>
-								Sign Out
-							</button>
-						</>
+					{data?.currentUser ? (
+						<UserNav email={data.currentUser.email} />
 					) : (
-						<>
-							<Link href="/auth/signin" className="nav-item nav-link">
-								Sign In
-							</Link>
-							<Link href="/auth/signup" className="nav-item nav-link">
-								Sign Up
-							</Link>
-						</>
+						<AuthLinks />
 					)}
 				</div>
 			</div>
