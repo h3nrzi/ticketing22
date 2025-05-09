@@ -1,15 +1,21 @@
 "use client";
 
 import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface UserNavProps {
 	email: string;
 }
 
 export default function UserNav({ email }: UserNavProps) {
+	const router = useRouter();
+
 	const handleSignOut = async () => {
 		try {
 			await axios.post("/api/users/signout", {}, { withCredentials: true });
+			router.refresh();
+			toast.success("Logout successfully!");
 		} catch (error) {
 			console.error((error as AxiosError).response?.data);
 		}
