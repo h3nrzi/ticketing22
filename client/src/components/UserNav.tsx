@@ -1,7 +1,7 @@
 "use client";
 
-import axiosInstance from "@/lib/utils/axios";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
+
 interface UserNavProps {
 	email: string;
 }
@@ -9,7 +9,7 @@ interface UserNavProps {
 export default function UserNav({ email }: UserNavProps) {
 	const handleSignOut = async () => {
 		try {
-			await axiosInstance.post("/api/users/signout", {});
+			await axios.post("/api/users/signout", {}, { withCredentials: true });
 		} catch (error) {
 			console.error((error as AxiosError).response?.data);
 		}

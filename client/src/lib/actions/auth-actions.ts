@@ -2,8 +2,7 @@
 
 import { ErrorResponse } from "@/types/ErrorResponse";
 import { FormState } from "@/types/FormState";
-import { AxiosError } from "axios";
-import axiosInstance from "../utils/axios";
+import axios, { AxiosError } from "axios";
 import { cookieManager } from "../utils/cookie-utils";
 
 export const signUp = async (prevState: FormState, formData: FormData) => {
@@ -13,7 +12,7 @@ export const signUp = async (prevState: FormState, formData: FormData) => {
 
 	try {
 		// Send the email and password to the server
-		const res = await axiosInstance.post("/api/users/signup", {
+		const res = await axios.post("http://ticketing.dev/api/users/signup", {
 			email,
 			password,
 		});
@@ -40,7 +39,7 @@ export const signin = async (prevState: FormState, formData: FormData) => {
 
 	try {
 		// Send the email and password to the server
-		const res = await axiosInstance.post("/api/users/signin", {
+		const res = await axios.post("http://ticketing.dev/api/users/signin", {
 			email,
 			password,
 		});

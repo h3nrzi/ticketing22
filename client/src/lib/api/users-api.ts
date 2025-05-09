@@ -1,14 +1,14 @@
-import axiosInstance from "@/lib/utils/axios";
-import { ErrorResponse } from "@/types/ErrorResponse";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { cookieManager } from "../utils/cookie-utils";
+import { ErrorResponse } from "@/types/ErrorResponse";
+
 export async function getCurrentUser() {
 	// Get the session cookie
 	const token = cookieManager.get("session");
 
 	try {
 		// Make the request to the auth service
-		const res = await axiosInstance.get("/api/users/currentuser", {
+		const res = await axios.get("http://ticketing.dev/api/users/currentuser", {
 			headers: token ? { Cookie: token.value } : {},
 		});
 
