@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: notifications-depl
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notifications
+  template:
+    metadata:
+      labels:
+        app: notifications
+    spec:
+      containers:
+        - name: notifications
+          image: h3nrzi/notifications:latest # Replace with your Docker Hub ID or image name
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+          env:
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'ticketing'
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            # Add other environment variables if needed by the notifications service
+            # For example, if you implement actual email sending:
+            # - name: SENDGRID_API_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: sendgrid-secret
+            #       key: SENDGRID_API_KEY
+            # - name: EMAIL_FROM_ADDRESS
+            #   value: "noreply@example.com"

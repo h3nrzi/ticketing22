@@ -10,7 +10,15 @@ kind: Config
 deploy:
   kubectl:
     manifests:
-      - ./infra/k8s/*
+      - ./infra/k8s/auth/*
+      - ./infra/k8s/client/*
+      - ./infra/k8s/expirations/*
+      - ./infra/k8s/nats/*
+      - ./infra/k8s/orders/*
+      - ./infra/k8s/payments/*
+      - ./infra/k8s/tickets/*
+      - ./infra/k8s/ingress-srv.yaml
+      - ./infra/k8s/notifications/*
 
 # ------------------------------------------------------------------------------
 
@@ -65,4 +73,13 @@ build:
       sync:
         manual:
           - src: "payments/src/**/*.ts"
+            dest: .
+    # Notifications Service
+    - image: h3nrzi/notifications
+      context: notifications
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "notifications/src/**/*.ts"
             dest: .
